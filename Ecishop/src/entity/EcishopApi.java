@@ -9,7 +9,6 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.NotFoundException;
-
 @Api(name="employeeapi",version="v1")
 public class EcishopApi {
 	
@@ -46,29 +45,62 @@ public class EcishopApi {
 			users.remove(index);
 		}
 		
-		@ApiMethod(name="update")
-		public User updateUser(User u) throws Exception{ 
-			int index = users.indexOf(u);
+		@ApiMethod(name="updateUser")
+		public User updateUser(@Named("id")Integer id, 
+						@Named("tid") String tid, 
+						@Named("name")String name, 
+						@Named("lastname") String last,
+						@Named("phone") Integer phone, 
+						@Named("email")String email, 
+						@Named("password")String pass) throws Exception{ 
+			int index = users.indexOf(new User(id));
 			if (index == -1) throw new Exception("Record does not exist");
 			User user = users.get(index);
-			user.setName(u.getName());
-			user.setPhone(u.getPhone());
-			user.setLastname(u.getLastname());
-			user.setTid(u.getTid());
-			user.setPassword(u.getPassword());
-			return u;
+			user.setName(name);
+			user.setPhone(phone);
+			user.setLastname(last);
+			user.setTid(tid);
+			if(passwordValidator(pass)) throw new Exception(" password must be eight "
+					+ "characters including"
+					+ " one special character and alphanumeric characters.");
+			user.setPassword(pass);
+			return user;
 		}
 		
+		private boolean passwordValidator(String pass) {
+			String PATTERN = "^[0-9a-zA-Z-\\+]+[*.!@#$%^&(){}[]:;<>,.?/~_+-=|]$";
+			Pattern pattern = Pattern.compile(PATTERN);
+		    Matcher matcher = pattern.matcher(pass);
+			return matcher.matches();
+		}
+		
+		@ApiMethod(name="list")
 		public List<User> getUsers(){
 			return users;
 		}
 		
-		
-		public User getUserbyId(Integer id) throws Exception{
+		@ApiMethod(name="userById")
+		public User getUserbyId(@Named("id") Integer id) throws Exception{
 			int index = users.indexOf(new User(id));
 			if (index == -1)
 				throw new Exception("Record does not exist");
 			return users.get(index);
+		}
+		
+		
+		@ApiMethod(name="signUp")
+			public boolean signUp(@Named("email")String email,
+								  @Named("password") String pass) throws Exception{
+			boolean r = false;
+			User u = null; 
+			for(int i = 0; i < users.size() && !r; i++){
+				u = users.get(i);
+				if(u.getEmail().equals(email)){
+						r = true;
+				}
+			}
+			if(r && !u.getPassword().equals(pass)) throw new Exception("Invalid user or password");
+			return true;
 		}
 		
 	
