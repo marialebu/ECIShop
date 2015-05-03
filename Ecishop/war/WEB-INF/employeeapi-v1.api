@@ -24,92 +24,6 @@
     "maxAge" : 0
   },
   "methods" : {
-    "employeeapi.updateUser" : {
-      "path" : "user/{id}/{tid}/{name}/{lastname}/{phone}/{email}/{password}",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "entity.EcishopApi.updateUser",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int32",
-            "required" : true
-          },
-          "tid" : {
-            "type" : "string",
-            "required" : true
-          },
-          "name" : {
-            "type" : "string",
-            "required" : true
-          },
-          "lastname" : {
-            "type" : "string",
-            "required" : true
-          },
-          "phone" : {
-            "type" : "int32",
-            "required" : true
-          },
-          "email" : {
-            "type" : "string",
-            "required" : true
-          },
-          "password" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "employeeapi.addUser" : {
-      "path" : "addUser/{id}/{tid}/{name}/{lastname}/{phone}/{email}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "entity.EcishopApi.addUser",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int32",
-            "required" : true
-          },
-          "tid" : {
-            "type" : "string",
-            "required" : true
-          },
-          "name" : {
-            "type" : "string",
-            "required" : true
-          },
-          "lastname" : {
-            "type" : "string",
-            "required" : true
-          },
-          "phone" : {
-            "type" : "int32",
-            "required" : true
-          },
-          "email" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "employeeapi.signUp" : {
       "path" : "signUp/{email}/{password}",
       "httpMethod" : "POST",
@@ -156,6 +70,51 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "employeeapi.updateUser" : {
+      "path" : "user/{id}/{tid}/{name}/{lastname}/{phone}/{email}/{password}",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "entity.EcishopApi.updateUser",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "tid" : {
+            "type" : "string",
+            "required" : true
+          },
+          "name" : {
+            "type" : "string",
+            "required" : true
+          },
+          "lastname" : {
+            "type" : "string",
+            "required" : true
+          },
+          "phone" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "email" : {
+            "type" : "string",
+            "required" : true
+          },
+          "password" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "employeeapi.removeUser" : {
       "path" : "user/{id}",
       "httpMethod" : "DELETE",
@@ -175,6 +134,47 @@
       },
       "response" : {
         "body" : "empty"
+      }
+    },
+    "employeeapi.addUser" : {
+      "path" : "addUser/{id}/{tid}/{name}/{lastname}/{phone}/{email}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "entity.EcishopApi.addUser",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "tid" : {
+            "type" : "string",
+            "required" : true
+          },
+          "name" : {
+            "type" : "string",
+            "required" : true
+          },
+          "lastname" : {
+            "type" : "string",
+            "required" : true
+          },
+          "phone" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "email" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "employeeapi.list" : {
@@ -236,16 +236,6 @@
       }
     },
     "methods" : {
-      "entity.EcishopApi.updateUser" : {
-        "response" : {
-          "$ref" : "User"
-        }
-      },
-      "entity.EcishopApi.addUser" : {
-        "response" : {
-          "$ref" : "User"
-        }
-      },
       "entity.EcishopApi.signUp" : {
         "response" : {
           "$ref" : "User"
@@ -256,7 +246,17 @@
           "$ref" : "User"
         }
       },
+      "entity.EcishopApi.updateUser" : {
+        "response" : {
+          "$ref" : "User"
+        }
+      },
       "entity.EcishopApi.removeUser" : {
+      },
+      "entity.EcishopApi.addUser" : {
+        "response" : {
+          "$ref" : "User"
+        }
       },
       "entity.EcishopApi.getUsers" : {
         "response" : {

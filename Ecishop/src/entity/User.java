@@ -32,6 +32,7 @@ public class User {
 		String alfa = "#$%&?¿@";
 		Random r = new Random();
 		int i = r.nextInt(alfa.length()-1);
+		while(!(i>0) || !(i<6))r.nextInt(alfa.length()-1);
 		String uuid = UUID.randomUUID().toString().substring(0, 4)+alfa.substring(i-1, i)+
 				UUID.randomUUID().toString().substring(0, 4);
 		password = uuid;
@@ -43,8 +44,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getEmail() throws Exception {
-		if(email != "") throw new Exception("You can't modify this field");
+	public String getEmail(){
 		return email;
 	}
 	public Integer getPhone() {
