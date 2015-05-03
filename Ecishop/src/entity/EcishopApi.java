@@ -5,7 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.api.server.spi.config.Api;
-import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.NotFoundException;
@@ -26,15 +25,11 @@ public class EcishopApi {
 			if(!validator(id, tid, email))throw new Exception("Invalid fields");
 			User user = new User(id, tid, name, last, phone, email);
 			users.add(user);
-			return user;	
+			return new User(id);	
 		}
 
 		private boolean validator(Integer id, String tid, String email) {
-			String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-		            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.{com, net, co})$";
-			Pattern pattern = Pattern.compile(PATTERN_EMAIL);
-		    Matcher matcher = pattern.matcher(email);
-			return matcher.matches() && tid.equals("cc") ? id.toString().length()>7 : 
+			return Validator.Validar(email) && tid.equals("cc") ? id.toString().length()>7 : 
 				id.toString().length()>4;
 		}
 		
@@ -89,7 +84,7 @@ public class EcishopApi {
 		
 		
 		@ApiMethod(name="signUp")
-			public boolean signUp(@Named("email")String email,
+			public User signUp(@Named("email")String email,
 								  @Named("password") String pass) throws Exception{
 			boolean r = false;
 			User u = null; 
@@ -100,7 +95,7 @@ public class EcishopApi {
 				}
 			}
 			if(r && !u.getPassword().equals(pass)) throw new Exception("Invalid user or password");
-			return true;
+			return u;
 		}
 		
 	
