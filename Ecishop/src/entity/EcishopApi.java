@@ -8,7 +8,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.NotFoundException;
-@Api(name="employeeapi",version="v1")
+@Api(name="ecishopApi",version="v1")
 public class EcishopApi {
 	
 	public static List<User> users = new ArrayList<User>();
