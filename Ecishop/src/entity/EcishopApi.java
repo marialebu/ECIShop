@@ -6,7 +6,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 
-@Api(name="employeeapi",version="v1")
+@Api(name="eciShopApi",version="v1", description ="Services for EciShop Android Aplication")
 public class EcishopApi {
 	
 	public static List<User> users = new ArrayList<User>();
@@ -307,13 +307,10 @@ public class EcishopApi {
 				if (max==Integer.MIN_VALUE)throw new Exception("Record does not exist");
 				return pmax;
 			}
+/*---------------------------------------------SALES-------------------------------------------------------------
 			
 			
-			
-			//---------------------------------------------SALES-------------------------------------------------------------
-			
-			
-			@ApiMethod(name="addSale")
+			/*@ApiMethod(name="addSale")
 			public Sale addUser(@Named("id")Integer id,
 								@Named("user")User seller,
 								@Named("products") ArrayList<Product> products
@@ -326,7 +323,7 @@ public class EcishopApi {
 			
 			@ApiMethod(name="listSales")
 			public List<Sale> getSales(){
-				return sales;
+				return sales;zzz
 			}
 			
 			@ApiMethod(name="salebyId")
@@ -336,8 +333,6 @@ public class EcishopApi {
 					throw new Exception("Record does not exist");
 				return sales.get(index);
 			}
+*/			
 			
-			
-			
-	
 }
