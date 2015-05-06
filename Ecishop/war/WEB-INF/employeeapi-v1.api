@@ -24,6 +24,21 @@
     "maxAge" : 0
   },
   "methods" : {
+    "employeeapi.list" : {
+      "path" : "usercollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "entity.EcishopApi.getUsers",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "employeeapi.signUp" : {
       "path" : "signUp/{email}/{password}",
       "httpMethod" : "POST",
@@ -71,7 +86,7 @@
       }
     },
     "employeeapi.updateUser" : {
-      "path" : "user/{id}/{tid}/{name}/{lastname}/{phone}/{email}/{password}",
+      "path" : "user/{id}/{name}/{lastname}/{phone}/{password}",
       "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
@@ -84,10 +99,6 @@
             "type" : "int32",
             "required" : true
           },
-          "tid" : {
-            "type" : "string",
-            "required" : true
-          },
           "name" : {
             "type" : "string",
             "required" : true
@@ -98,10 +109,6 @@
           },
           "phone" : {
             "type" : "int32",
-            "required" : true
-          },
-          "email" : {
-            "type" : "string",
             "required" : true
           },
           "password" : {
@@ -176,21 +183,6 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
-    },
-    "employeeapi.list" : {
-      "path" : "usercollection",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "entity.EcishopApi.getUsers",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
@@ -236,6 +228,11 @@
       }
     },
     "methods" : {
+      "entity.EcishopApi.getUsers" : {
+        "response" : {
+          "$ref" : "UserCollection"
+        }
+      },
       "entity.EcishopApi.signUp" : {
         "response" : {
           "$ref" : "User"
@@ -256,11 +253,6 @@
       "entity.EcishopApi.addUser" : {
         "response" : {
           "$ref" : "User"
-        }
-      },
-      "entity.EcishopApi.getUsers" : {
-        "response" : {
-          "$ref" : "UserCollection"
         }
       }
     }

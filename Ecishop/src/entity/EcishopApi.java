@@ -25,7 +25,7 @@ public class EcishopApi {
 			if(!validator(id, tid, email))throw new Exception("Invalid fields");
 			User user = new User(id, tid, name, last, phone, email);
 			users.add(user);
-			return new User(id);	
+			return user;	
 		}
 
 		private boolean validator(Integer id, String tid, String email) {
@@ -42,11 +42,9 @@ public class EcishopApi {
 		
 		@ApiMethod(name="updateUser")
 		public User updateUser(@Named("id")Integer id, 
-						@Named("tid") String tid, 
 						@Named("name")String name, 
 						@Named("lastname") String last,
 						@Named("phone") Integer phone, 
-						@Named("email")String email, 
 						@Named("password")String pass) throws Exception{ 
 			int index = users.indexOf(new User(id));
 			if (index == -1) throw new Exception("Record does not exist");
@@ -54,8 +52,7 @@ public class EcishopApi {
 			user.setName(name);
 			user.setPhone(phone);
 			user.setLastname(last);
-			user.setTid(tid);
-			if(passwordValidator(pass)) throw new Exception(" password must be eight "
+			if(!passwordValidator(pass)) throw new Exception(" password must be eight "
 					+ "characters including"
 					+ " one special character and alphanumeric characters.");
 			user.setPassword(pass);
@@ -63,10 +60,21 @@ public class EcishopApi {
 		}
 		
 		private boolean passwordValidator(String pass) {
-			String PATTERN = "^[0-9a-zA-Z-\\+]+[*.!@#$%^&(){}[]:;<>,.?/~_+-=|]$";
-			Pattern pattern = Pattern.compile(PATTERN);
-		    Matcher matcher = pattern.matcher(pass);
-			return matcher.matches();
+			String [] string = pass.split("");
+			String[] numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+			String[] charac = {"#", "$", "%", "&", "/", "(", ")", "=","?", "¿", "@", ".", "!", "¡", "+", "*", "-", "{", "}"};
+			String[] lett = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o","p", "q", 
+					"r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+					"N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+			boolean ch = false;
+			boolean num = false;
+			boolean let = false;
+			for (int i = 0; i< string.length && !(ch&&num&&let); i++){
+				for (int j = 0; j < charac.length; j++) ch = charac[j].equals(string[i]) || ch;
+				for (int j = 0; j < numbers.length; j++) num = numbers[j].equals(string[i]) || num;
+				for (int j = 0; j < lett.length; j++) let = lett[j].equals(string[i]) || let;
+			}
+			return string.length > 7 && ch && num&&let; 
 		}
 		
 		@ApiMethod(name="list")
