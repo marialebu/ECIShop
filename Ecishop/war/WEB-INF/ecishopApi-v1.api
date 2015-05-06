@@ -330,6 +330,52 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "ecishopApi.usersbyFullName" : {
+      "path" : "usercollection/{name}/{lastName}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "entity.EcishopApi.getUsersbyName",
+      "request" : {
+        "parameters" : {
+          "name" : {
+            "type" : "string",
+            "required" : true
+          },
+          "lastName" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "ecishopApi.usersbyLastName" : {
+      "path" : "usercollection/{lastName}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "entity.EcishopApi.getUsersbyLastName",
+      "request" : {
+        "parameters" : {
+          "lastName" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
@@ -458,6 +504,16 @@
       "entity.EcishopApi.signUp" : {
         "response" : {
           "$ref" : "User"
+        }
+      },
+      "entity.EcishopApi.getUsersbyName" : {
+        "response" : {
+          "$ref" : "UserCollection"
+        }
+      },
+      "entity.EcishopApi.getUsersbyLastName" : {
+        "response" : {
+          "$ref" : "UserCollection"
         }
       }
     }

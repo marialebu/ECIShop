@@ -92,6 +92,29 @@ public class EcishopApi {
 			return users.get(index);
 		}
 		
+		@ApiMethod(name="usersbyFullName")
+		public ArrayList<User> getUsersbyName(@Named("name")String name, @Named("lastName") String last) throws Exception{
+			ArrayList<User> res = new ArrayList<User>();
+			for(User u : users){
+				if(u.getName().equals(name) && u.getLastname().equals(last)){
+					res.add(u);
+				}
+			}
+			
+			return res;
+		}
+		
+		@ApiMethod(name="usersbyLastName")
+		public ArrayList<User> getUsersbyLastName(@Named("lastName") String last) throws Exception{
+			ArrayList<User> res = new ArrayList<User>();
+			for(User u : users){
+				if(u.getLastname().equals(last)){
+					res.add(u);
+				}
+			}
+			return res;
+		}
+		
 		
 		@ApiMethod(name="signUp")
 			public User signUp(@Named("email")String email,
