@@ -12,6 +12,8 @@ import com.google.api.server.spi.response.NotFoundException;
 public class EcishopApi {
 	
 	public static List<User> users = new ArrayList<User>();
+
+	public static List<Product> products = new ArrayList<Product>();
 	
 	@ApiMethod(name="addUser")
 	public User addUser(@Named("id")Integer id, 
@@ -106,5 +108,71 @@ public class EcishopApi {
 			return u;
 		}
 		
+
+		//---------------------------------------------PRODUCTS-------------------------------------------------------------
+			
+			@ApiMethod(name="addProduct")
+			public Product addProduct(@Named("id")Integer id, 
+									@Named("type") String type, 
+									@Named("name")String name, 
+									@Named("desc") String desc,
+									@Named("image")String image,
+									@Named("units")Integer units,
+									@Named("price")Integer price) throws Exception{
+				int index = products.indexOf(new Product(id));
+				if( index != -1) throw new Exception("The record already exists");
+				if(!validator(id, type, name, desc, image, units, price))throw new Exception("Invalid fields");
+				Product product = new Product(id, type, name, desc, image, units, price);
+				products.add(product);
+				return new Product(id);
+			}
+				
+			private boolean validator(Integer id, String type, String name,
+					String desc, String image, Integer units, Integer price) {
+					return id!=null && type.length()>15 && name.length()>15 && desc.length()>15 && image.length()>15 && units!=null &&
+							units>0 && price!=null && price>0;
+			}
+				@ApiMethod(name="updateProduct")
+			public Product updateProduct(@Named("id")Integer id, 
+							@Named("type") String type, 
+							@Named("name")String name, 
+							@Named("desc") String desc,
+							@Named("image")String image,
+							@Named("units")Integer units,
+							@Named("price")Integer price) throws Exception{ 
+				int index = products.indexOf(new Product(id));
+				if (index == -1) throw new Exception("Record does not exist");
+				if (units<=0 || price < 0) throw new Exception("Each number (units, price) must be a positive integer");
+				Product product = products.get(index);
+				product.setName(name);
+				product.setType(type);
+				product.setDesc(desc);
+				product.setImage(image);
+				product.setUnits(units);
+				product.setPrice(price);
+				return product;
+			}
+			
+			@ApiMethod(name="removeProduct")
+			public void removeProduct(@Named("id") Integer id) throws Exception{
+				int index = products.indexOf(new Product(id));
+				if(index == -1) throw new Exception("The record doesn't exists");
+				products.remove(index);
+			}
+				
+			@ApiMethod(name="sellProduct")
+			public void sellProduct(@Named("id") Integer id) throws Exception{
+				int index = products.indexOf(new Product(id));
+				if(index == -1) throw new Exception("The record doesn't exists");
+				boolean productExist = products.get(index).removeUnit();
+				if(!productExist){
+					removeProduct(id);
+				}
+			}
+				
+			@ApiMethod(name="listProducts")
+			public List<Product> getProducts(){
+				return products;
+			}
 	
 }
