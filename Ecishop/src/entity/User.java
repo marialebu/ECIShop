@@ -11,6 +11,9 @@ public class User {
 	private Integer phone; 
 	private String email;
 	private String password;
+	private String address;
+	private String pmethod;
+	private Integer cardnumber;
 	
 	public User(Integer id){
 		super();
@@ -71,12 +74,6 @@ public class User {
 	public void setTid(String tid) {
 		this.tid = tid;
 	}
-	private Integer getId() {
-		return id;
-	}
-	private void setId(Integer id) {
-		this.id = id;
-	}
 	
 	@Override
 	public String toString(){
@@ -107,6 +104,18 @@ public class User {
 				return false;
 		} else if (!id.equals(other.id)) return false;
 		return true;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setPaymentMethod(String paymentmethod) {
+		this.pmethod = paymentmethod;
+	}
+
+	public void setCardNumber(Integer cardnumber) {
+		this.cardnumber = cardnumber;
 	} 
 
 }

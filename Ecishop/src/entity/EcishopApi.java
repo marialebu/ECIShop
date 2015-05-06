@@ -1,19 +1,19 @@
 package entity;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
-import com.google.api.server.spi.response.NotFoundException;
-@Api(name="ecishopApi",version="v1")
+
+@Api(name="employeeapi",version="v1")
 public class EcishopApi {
 	
 	public static List<User> users = new ArrayList<User>();
 
 	public static List<Product> products = new ArrayList<Product>();
+	
+	public static List<Sale> sales = new ArrayList<Sale>();
 	
 	@ApiMethod(name="addUser")
 	public User addUser(@Named("id")Integer id, 
@@ -27,13 +27,30 @@ public class EcishopApi {
 			if(!validator(id, tid, email))throw new Exception("Invalid fields");
 			User user = new User(id, tid, name, last, phone, email);
 			users.add(user);
-			return user;	
+			return user;
 		}
 
 		private boolean validator(Integer id, String tid, String email) {
-			return Validator.Validar(email) && tid.equals("cc") ? id.toString().length()>7 : 
+			return Validator.validateEmail(email) && getUsersbyEmail(email).size()==0 && !existUserById(id) && tid.equals("cc") ? id.toString().length()>7 : 
 				id.toString().length()>4;
 		}
+		
+		
+		@ApiMethod(name="setadditionalUserData")
+		public User setadditionalUserData(@Named("id")Integer id, 
+						@Named("adress")String address, 
+						@Named("paymentmethod") String paymentmethod,
+						@Named("cardnumber") Integer cardnumber) throws Exception{ 
+			int index = users.indexOf(new User(id));
+			if (index == -1) throw new Exception("Record does not exist");
+			if(!Validator.validateCardNumber(cardnumber+"")) throw new Exception("Invalid card number");
+			User user = users.get(index);
+			user.setAddress(address);
+			user.setPaymentMethod(paymentmethod);
+			user.setCardNumber(cardnumber);
+			return user;
+		}
+		
 		
 		@ApiMethod(name="removeUser")
 		public void removeUser(@Named("id") Integer id) throws Exception{
@@ -54,37 +71,31 @@ public class EcishopApi {
 			user.setName(name);
 			user.setPhone(phone);
 			user.setLastname(last);
-			if(!passwordValidator(pass)) throw new Exception(" password must be eight "
+			if(Validator.validatePassword(pass)) throw new Exception(" password must be eight "
 					+ "characters including"
 					+ " one special character and alphanumeric characters.");
 			user.setPassword(pass);
 			return user;
 		}
 		
-		private boolean passwordValidator(String pass) {
-			String [] string = pass.split("");
-			String[] numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-			String[] charac = {"#", "$", "%", "&", "/", "(", ")", "=","?", "¿", "@", ".", "!", "¡", "+", "*", "-", "{", "}"};
-			String[] lett = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o","p", "q", 
-					"r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-					"N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-			boolean ch = false;
-			boolean num = false;
-			boolean let = false;
-			for (int i = 0; i< string.length && !(ch&&num&&let); i++){
-				for (int j = 0; j < charac.length; j++) ch = charac[j].equals(string[i]) || ch;
-				for (int j = 0; j < numbers.length; j++) num = numbers[j].equals(string[i]) || num;
-				for (int j = 0; j < lett.length; j++) let = lett[j].equals(string[i]) || let;
-			}
-			return string.length > 7 && ch && num&&let; 
-		}
 		
 		@ApiMethod(name="list")
 		public List<User> getUsers(){
 			return users;
 		}
 		
-		@ApiMethod(name="userById")
+		private boolean existUserById(@Named("id") Integer id){
+			boolean exist;
+			try{
+				getUserbyId(id);
+				exist=true;
+			}catch(Exception e){
+				exist=false;
+			}
+			return exist;
+		}
+		
+		@ApiMethod(name="userById", path="user_id")
 		public User getUserbyId(@Named("id") Integer id) throws Exception{
 			int index = users.indexOf(new User(id));
 			if (index == -1)
@@ -92,7 +103,7 @@ public class EcishopApi {
 			return users.get(index);
 		}
 		
-		@ApiMethod(name="usersbyFullName")
+		@ApiMethod(name="usersbyFullName", path="user_fname")
 		public ArrayList<User> getUsersbyName(@Named("name")String name, @Named("lastName") String last) throws Exception{
 			ArrayList<User> res = new ArrayList<User>();
 			for(User u : users){
@@ -104,7 +115,7 @@ public class EcishopApi {
 			return res;
 		}
 		
-		@ApiMethod(name="usersbyLastName")
+		@ApiMethod(name="usersbyLastName", path="user_lname")
 		public ArrayList<User> getUsersbyLastName(@Named("lastName") String last) throws Exception{
 			ArrayList<User> res = new ArrayList<User>();
 			for(User u : users){
@@ -112,6 +123,18 @@ public class EcishopApi {
 					res.add(u);
 				}
 			}
+			return res;
+		}
+		
+		@ApiMethod(name="usersbyEmail", path="user_email")
+		public ArrayList<User> getUsersbyEmail(@Named("email") String email){
+			ArrayList<User> res = new ArrayList<User>();
+			for(User u : users){
+				if(u.getEmail().equals(email)){
+					res.add(u);
+				}
+			}
+			
 			return res;
 		}
 		
@@ -197,5 +220,124 @@ public class EcishopApi {
 			public List<Product> getProducts(){
 				return products;
 			}
+			
+			@ApiMethod(name="productById", path="product_id")
+			public Product getProductById(@Named("id") Integer id) throws Exception{
+				boolean existe = false;
+				int index = -1;
+				for(int i = 0 ; i < products.size() && !existe; i++){
+					if(products.get(i).getId()==id){
+						existe=true;
+						index=i;
+					}
+				}
+				if (!existe)
+					throw new Exception("Record does not exist");
+				return products.get(index);
+			}
+			
+			@ApiMethod(name="productsByType", path="product_type")
+			public List<Product> getProductByType(@Named("type") String type) throws Exception{
+				List<Product> resp = new ArrayList<Product>();
+				for(Product p : products){
+					String tipo = p.getType();
+					if(tipo.equals(type)){
+						resp.add(p);
+					}
+				}
+				if (resp.isEmpty())throw new Exception("Record does not exist");
+				return resp;
+			}
+			
+			@ApiMethod(name="productByName", path="product_name")
+			public List<Product> getProductByName(@Named("name") String name) throws Exception{
+				List<Product> resp = new ArrayList<Product>();
+				for(Product p : products){
+					String nombre = p.getName();
+					if(name.equals(nombre)){
+						resp.add(p);
+					}
+				}
+				if (resp.isEmpty())throw new Exception("Record does not exist");
+				return resp;
+			}
+			
+			@ApiMethod(name="productsByUniquePrice", path="product_uprice")
+			public List<Product> getProductsByUniquePrice(@Named("price") Integer price) throws Exception{
+				List<Product> resp = new ArrayList<Product>();
+				for(Product p : products){
+					int precio = p.getPrice();
+					if(precio==price){
+						resp.add(p);
+					}
+				}
+				if (resp.isEmpty())throw new Exception("Record does not exist");
+				return resp;
+			}
+			
+			@ApiMethod(name="productByRangePrice", path="product_rprice")
+			public List<Product> getProductByRangePrice(@Named("min") Integer min, @Named("max") Integer max) throws Exception{
+				if(min>max){
+					int temp = min;
+					min = max;
+					max = temp;
+				}
+				List<Product> resp = new ArrayList<Product>();
+				for(Product p : products){
+					int precio = p.getPrice();
+					if(precio>=min && precio<=max){
+						resp.add(p);
+					}
+				}
+				if (resp.isEmpty())throw new Exception("Record does not exist");
+				return resp;
+			}
+			
+			@ApiMethod(name="theMostSold")
+			public Product getTheMostSold() throws Exception{
+				int max = Integer.MIN_VALUE;
+				Product pmax = null;
+				for(Product p : products){
+					int precio = p.unitsSold();
+					if(precio>=max){
+						pmax = p;
+						max = precio;
+					}
+				}
+				if (max==Integer.MIN_VALUE)throw new Exception("Record does not exist");
+				return pmax;
+			}
+			
+			
+			
+			//---------------------------------------------SALES-------------------------------------------------------------
+			
+			
+			@ApiMethod(name="addSale")
+			public Sale addUser(@Named("id")Integer id,
+								@Named("user")User seller,
+								@Named("products") ArrayList<Product> products
+					) throws Exception{
+					int index = users.indexOf(new Sale(id));
+					Sale sale = new Sale(id, seller, products);
+					sales.add(sale);
+					return sale;	
+			}
+			
+			@ApiMethod(name="listSales")
+			public List<Sale> getSales(){
+				return sales;
+			}
+			
+			@ApiMethod(name="salebyId")
+			public Sale getSaleById(Integer id) throws Exception{
+				int index = sales.indexOf(new Sale(id));
+				if (index == -1)
+					throw new Exception("Record does not exist");
+				return sales.get(index);
+			}
+			
+			
+			
 	
 }

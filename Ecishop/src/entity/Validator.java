@@ -7,7 +7,7 @@ public class Validator {
 	
 	private static char[] char_specials = {'.','!','@','#','$','%','^','&','(',')','{','}','[',']',':',';','<','>',',','.','?','/','~','_','+','-','=','|'};
  	
-	public static boolean Validar(String email){
+	public static boolean validateEmail(String email){
 		String[] stringv = email.split("@"); //Debe tener una arroba
 		boolean retorno = false;
 		if(stringv.length==2){//Debe tener usuario y dominio
@@ -44,18 +44,43 @@ public class Validator {
 	}
 
 	
-	public static boolean validarPassword(String email){
-		boolean retorno = false;
-		if(email.length()>=8){
-			for (int i = 0; i < email.length() && !retorno; i++) {
-				for (int j = 0; j < char_specials.length && !retorno; j++) {
-					if(email.charAt(i)==char_specials[j]){
-						retorno=true;
-					}
-				}
-			}
+	public static boolean validatePassword(String pass){
+		String [] string = pass.split("");
+		String[] numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+		String[] charac = {"#", "$", "%", "&", "/", "(", ")", "=","?", "¿", "@", ".", "!", "¡", "+", "*", "-", "{", "}"};
+		String[] lett = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o","p", "q", 
+				"r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+				"N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+		boolean ch = false;
+		boolean num = false;
+		boolean let = false;
+		for (int i = 0; i< string.length && !(ch&&num&&let); i++){
+			for (int j = 0; j < charac.length; j++) ch = charac[j].equals(string[i]) || ch;
+			for (int j = 0; j < numbers.length; j++) num = numbers[j].equals(string[i]) || num;
+			for (int j = 0; j < lett.length; j++) let = lett[j].equals(string[i]) || let;
 		}
-		return retorno;
+		return string.length > 7 && ch && num&&let; 
 	}
+	
+	public static boolean validateCardNumber(String s) {
+        return LuhnAlgorithm(s, false) % 10 == 0;
+    }
+	
+	private static int LuhnAlgorithm(String s, boolean evenPosition) {
+        int sum = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            int n = Integer.parseInt(s.substring(i, i + 1));
+            if (evenPosition) {
+                n *= 2;
+                if (n > 9) {
+                    n = (n % 10) + 1;
+                }
+            }
+            sum += n;
+            evenPosition = !evenPosition;
+        }
+
+        return sum;
+    }
 
 }
