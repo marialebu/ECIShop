@@ -330,10 +330,10 @@ public class EcishopApi {
 //--------------------------------------------SALES-------------------------------------------------------------
 	
 	@ApiMethod(name="addSale")
-	public Sale addSale(@Named("id") String id,
-					@Named("userId")String userId,
-					@Named("productId") String productId
+	public Sale addSale(@Named("userId")String userId,
+						@Named("productId") String productId
 		) throws Exception{
+		String id = Integer.toString(sales.size());
 		int index = users.indexOf(new User(userId));
 		if( index == -1) throw new Exception("The user doesnt exists");
 		User user = users.get(index);
@@ -352,6 +352,13 @@ public class EcishopApi {
 	@ApiMethod(name="listSales")
 	public List<Sale> getSales(){
 		return sales;
+	}
+	
+	@ApiMethod(name="saleById")
+	public Sale getSaleById(@Named("id") String id) throws Exception{
+		int index = sales.indexOf(new Sale(id));
+		if( index == -1) throw new Exception("The record doesn't exists");
+		return sales.get(index);
 	}
 	
 	@ApiMethod(name="salesbyUserId", path="sales_uid")
@@ -391,4 +398,10 @@ public class EcishopApi {
 		}
 		return resp;
 	}
+	
+	//----------------------------------------------PURCHASES-------------------------------------------------------------------
+	
+	
+	
+	
 }
