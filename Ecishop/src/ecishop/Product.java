@@ -26,7 +26,7 @@ public class Product {
 		this.units = units;
 		original_units = units;
 		this.price = price;
-		this.seller = seller;
+		this.seller= seller;
 	}
 	
 	@Override
@@ -121,6 +121,10 @@ public class Product {
 	
 	public int unitsSold(){
 		return original_units - units;
+	}
+
+	public User getSeller() {
+		return seller;
 	}
 
 }

@@ -55,6 +55,73 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "eciShopApi.productByRangePrice" : {
+      "path" : "product_rprice",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.getProductByRangePrice",
+      "request" : {
+        "parameters" : {
+          "min" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "max" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.salesbySeller" : {
+      "path" : "salecollection/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.getSalesBySellerId",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.productsByUniquePrice" : {
+      "path" : "product_uprice",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.getProductsByUniquePrice",
+      "request" : {
+        "parameters" : {
+          "price" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "eciShopApi.setadditionalUserData" : {
       "path" : "setadditionalUserData/{id}/{adress}/{paymentmethod}/{cardnumber}",
       "httpMethod" : "POST",
@@ -109,52 +176,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "eciShopApi.productsByUniquePrice" : {
-      "path" : "product_uprice",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getProductsByUniquePrice",
-      "request" : {
-        "parameters" : {
-          "price" : {
-            "type" : "int32",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "eciShopApi.productByRangePrice" : {
-      "path" : "product_rprice",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getProductByRangePrice",
-      "request" : {
-        "parameters" : {
-          "min" : {
-            "type" : "int32",
-            "required" : true
-          },
-          "max" : {
-            "type" : "int32",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "eciShopApi.salesbyProductId" : {
       "path" : "sales_pid",
       "httpMethod" : "GET",
@@ -176,38 +197,36 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "eciShopApi.removeUser" : {
-      "path" : "user/{id}",
-      "httpMethod" : "DELETE",
+    "eciShopApi.theMostSold" : {
+      "path" : "product",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.removeUser",
+      "rosyMethod" : "ecishop.EcishopApi.getTheMostSold",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.addUser" : {
+      "path" : "addUser/{id}/{tid}/{name}/{lastname}/{phone}/{gender}/{birthday}/{email}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.addUser",
       "request" : {
         "parameters" : {
           "id" : {
             "type" : "string",
             "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "eciShopApi.updateUser" : {
-      "path" : "user/{id}/{name}/{lastname}/{password}",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.updateUser",
-      "request" : {
-        "parameters" : {
-          "id" : {
+          },
+          "tid" : {
             "type" : "string",
             "required" : true
           },
@@ -219,57 +238,19 @@
             "type" : "string",
             "required" : true
           },
-          "password" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "eciShopApi.userById" : {
-      "path" : "user_id",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getUserbyId",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "eciShopApi.addSale" : {
-      "path" : "addSale/{id}/{userId}/{productId}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.addSale",
-      "request" : {
-        "parameters" : {
-          "id" : {
+          "phone" : {
             "type" : "string",
             "required" : true
           },
-          "userId" : {
+          "gender" : {
             "type" : "string",
             "required" : true
           },
-          "productId" : {
+          "birthday" : {
+            "type" : "string",
+            "required" : true
+          },
+          "email" : {
             "type" : "string",
             "required" : true
           }
@@ -329,130 +310,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "eciShopApi.productByName" : {
-      "path" : "product_name",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getProductByName",
-      "request" : {
-        "parameters" : {
-          "name" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "eciShopApi.theMostSold" : {
-      "path" : "product",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getTheMostSold",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "eciShopApi.usersbyEmail" : {
-      "path" : "user_email",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getUsersbyEmail",
-      "request" : {
-        "parameters" : {
-          "email" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "eciShopApi.usersbyFullName" : {
-      "path" : "user_fname",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getUsersbyName",
-      "request" : {
-        "parameters" : {
-          "name" : {
-            "type" : "string",
-            "required" : true
-          },
-          "lastName" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "eciShopApi.salesbyUserId" : {
-      "path" : "sales_uid",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getSalesbyUserId",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "eciShopApi.sellProduct" : {
-      "path" : "sellProduct/{id}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.sellProduct",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "eciShopApi.signUp" : {
       "path" : "signUp/{email}/{password}",
       "httpMethod" : "POST",
@@ -478,17 +335,46 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "eciShopApi.productById" : {
-      "path" : "product_id",
+    "eciShopApi.addSale" : {
+      "path" : "addSale/{id}/{userId}/{productId}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.addSale",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          },
+          "userId" : {
+            "type" : "string",
+            "required" : true
+          },
+          "productId" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.productByName" : {
+      "path" : "product_name",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getProductById",
+      "rosyMethod" : "ecishop.EcishopApi.getProductByName",
       "request" : {
         "parameters" : {
-          "id" : {
+          "name" : {
             "type" : "string",
             "required" : true
           }
@@ -520,15 +406,42 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "eciShopApi.listSales" : {
-      "path" : "salecollection",
+    "eciShopApi.productById" : {
+      "path" : "product_id",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.getSales",
+      "rosyMethod" : "ecishop.EcishopApi.getProductById",
       "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.usersbyEmail" : {
+      "path" : "user_email",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.getUsersbyEmail",
+      "request" : {
+        "parameters" : {
+          "email" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
         "body" : "empty"
       },
       "response" : {
@@ -580,6 +493,52 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "eciShopApi.usersbyFullName" : {
+      "path" : "user_fname",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.getUsersbyName",
+      "request" : {
+        "parameters" : {
+          "name" : {
+            "type" : "string",
+            "required" : true
+          },
+          "lastName" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.sellProduct" : {
+      "path" : "sellProduct/{id}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.sellProduct",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
     "eciShopApi.removeProduct" : {
       "path" : "product/{id}",
       "httpMethod" : "DELETE",
@@ -601,21 +560,59 @@
         "body" : "empty"
       }
     },
-    "eciShopApi.addUser" : {
-      "path" : "addUser/{id}/{tid}/{name}/{lastname}/{phone}/{gender}/{birthday}/{email}",
-      "httpMethod" : "POST",
+    "eciShopApi.removeUser" : {
+      "path" : "user/{id}",
+      "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "ecishop.EcishopApi.addUser",
+      "rosyMethod" : "ecishop.EcishopApi.removeUser",
       "request" : {
         "parameters" : {
           "id" : {
             "type" : "string",
             "required" : true
-          },
-          "tid" : {
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "eciShopApi.userById" : {
+      "path" : "user_id",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.getUserbyId",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.updateUser" : {
+      "path" : "user/{id}/{name}/{lastname}/{password}",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.updateUser",
+      "request" : {
+        "parameters" : {
+          "id" : {
             "type" : "string",
             "required" : true
           },
@@ -627,23 +624,47 @@
             "type" : "string",
             "required" : true
           },
-          "phone" : {
-            "type" : "string",
-            "required" : true
-          },
-          "gender" : {
-            "type" : "string",
-            "required" : true
-          },
-          "birthday" : {
-            "type" : "string",
-            "required" : true
-          },
-          "email" : {
+          "password" : {
             "type" : "string",
             "required" : true
           }
         },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.salesbyUserId" : {
+      "path" : "sales_uid",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.getSalesbyUserId",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "eciShopApi.listSales" : {
+      "path" : "salecollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "ecishop.EcishopApi.getSales",
+      "request" : {
         "body" : "empty"
       },
       "response" : {
@@ -684,10 +705,10 @@
           "birth" : {
             "$ref" : "Calendar"
           },
-          "paymentMethod" : {
+          "cardNumber" : {
             "type" : "string"
           },
-          "cardNumber" : {
+          "paymentMethod" : {
             "type" : "string"
           }
         }
@@ -853,6 +874,9 @@
           },
           "price" : {
             "type" : "integer"
+          },
+          "seller" : {
+            "$ref" : "User"
           }
         }
       },
@@ -907,6 +931,21 @@
           "$ref" : "ProductCollection"
         }
       },
+      "ecishop.EcishopApi.getProductByRangePrice" : {
+        "response" : {
+          "$ref" : "ProductCollection"
+        }
+      },
+      "ecishop.EcishopApi.getSalesBySellerId" : {
+        "response" : {
+          "$ref" : "SaleCollection"
+        }
+      },
+      "ecishop.EcishopApi.getProductsByUniquePrice" : {
+        "response" : {
+          "$ref" : "ProductCollection"
+        }
+      },
       "ecishop.EcishopApi.setadditionalUserData" : {
         "response" : {
           "$ref" : "User"
@@ -917,29 +956,27 @@
           "$ref" : "UserCollection"
         }
       },
-      "ecishop.EcishopApi.getProductsByUniquePrice" : {
-        "response" : {
-          "$ref" : "ProductCollection"
-        }
-      },
-      "ecishop.EcishopApi.getProductByRangePrice" : {
-        "response" : {
-          "$ref" : "ProductCollection"
-        }
-      },
       "ecishop.EcishopApi.getSalesbyProductId" : {
         "response" : {
           "$ref" : "SaleCollection"
         }
       },
-      "ecishop.EcishopApi.removeUser" : {
+      "ecishop.EcishopApi.getTheMostSold" : {
+        "response" : {
+          "$ref" : "Product"
+        }
       },
-      "ecishop.EcishopApi.updateUser" : {
+      "ecishop.EcishopApi.addUser" : {
         "response" : {
           "$ref" : "User"
         }
       },
-      "ecishop.EcishopApi.getUserbyId" : {
+      "ecishop.EcishopApi.addProduct" : {
+        "response" : {
+          "$ref" : "Product"
+        }
+      },
+      "ecishop.EcishopApi.signUp" : {
         "response" : {
           "$ref" : "User"
         }
@@ -949,17 +986,17 @@
           "$ref" : "Sale"
         }
       },
-      "ecishop.EcishopApi.addProduct" : {
-        "response" : {
-          "$ref" : "Product"
-        }
-      },
       "ecishop.EcishopApi.getProductByName" : {
         "response" : {
           "$ref" : "ProductCollection"
         }
       },
-      "ecishop.EcishopApi.getTheMostSold" : {
+      "ecishop.EcishopApi.getProductByType" : {
+        "response" : {
+          "$ref" : "ProductCollection"
+        }
+      },
+      "ecishop.EcishopApi.getProductById" : {
         "response" : {
           "$ref" : "Product"
         }
@@ -969,9 +1006,30 @@
           "$ref" : "UserCollection"
         }
       },
+      "ecishop.EcishopApi.updateProduct" : {
+        "response" : {
+          "$ref" : "Product"
+        }
+      },
       "ecishop.EcishopApi.getUsersbyName" : {
         "response" : {
           "$ref" : "UserCollection"
+        }
+      },
+      "ecishop.EcishopApi.sellProduct" : {
+      },
+      "ecishop.EcishopApi.removeProduct" : {
+      },
+      "ecishop.EcishopApi.removeUser" : {
+      },
+      "ecishop.EcishopApi.getUserbyId" : {
+        "response" : {
+          "$ref" : "User"
+        }
+      },
+      "ecishop.EcishopApi.updateUser" : {
+        "response" : {
+          "$ref" : "User"
         }
       },
       "ecishop.EcishopApi.getSalesbyUserId" : {
@@ -979,38 +1037,9 @@
           "$ref" : "SaleCollection"
         }
       },
-      "ecishop.EcishopApi.sellProduct" : {
-      },
-      "ecishop.EcishopApi.signUp" : {
-        "response" : {
-          "$ref" : "User"
-        }
-      },
-      "ecishop.EcishopApi.getProductById" : {
-        "response" : {
-          "$ref" : "Product"
-        }
-      },
-      "ecishop.EcishopApi.getProductByType" : {
-        "response" : {
-          "$ref" : "ProductCollection"
-        }
-      },
       "ecishop.EcishopApi.getSales" : {
         "response" : {
           "$ref" : "SaleCollection"
-        }
-      },
-      "ecishop.EcishopApi.updateProduct" : {
-        "response" : {
-          "$ref" : "Product"
-        }
-      },
-      "ecishop.EcishopApi.removeProduct" : {
-      },
-      "ecishop.EcishopApi.addUser" : {
-        "response" : {
-          "$ref" : "User"
         }
       }
     }

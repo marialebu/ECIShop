@@ -367,9 +367,25 @@ public class EcishopApi {
 	
 	@ApiMethod(name="salesbyProductId", path="sales_pid")
 	public ArrayList<Sale> getSalesbyProductId(@Named("id") String id) throws Exception{
+		int index = sales.indexOf(new Sale(id));
+		if( index == -1) throw new Exception("The user doesnt exists");
 		ArrayList<Sale> resp = new ArrayList<Sale>();
 		for(Sale s : sales){
 			if(s.getProduct().getId().equals(id)){
+				resp.add(s);
+			}
+		}
+		return resp;
+	}
+	
+	/*
+	 * Buscar ventas por vendedor. 
+	 */
+	@ApiMethod(name="salesbySeller")
+	public ArrayList<Sale> getSalesBySellerId(@Named("id") String id) throws Exception{
+		ArrayList<Sale> resp = new ArrayList<Sale>();
+		for(Sale s : sales){
+			if(s.getSeller().equals(id)){
 				resp.add(s);
 			}
 		}
