@@ -1,22 +1,24 @@
 package ecishop;
 
+import java.util.ArrayList;
+
 
 public class Sale{
 	
 	private String id; 
 	private User seller; 
-	private Product product;
+	private ArrayList<Product> products;
 	
 	public Sale(String id){
 		super();
 		this.id = id;
 	}
 	
-	public Sale(String id, User user, Product product){
+	public Sale(String id, User user, ArrayList<Product> products){
 		super();
 		this.id = id;
 		this.seller = user;
-		this.product = product;
+		this.products = products;
 	}
 
 	public String getId() {
@@ -27,15 +29,27 @@ public class Sale{
 		return seller;
 	}
 
-	public Product getProduct() {
-		return product;
+	public ArrayList<Product> getProducts() {
+		return products;
 	}
-	
 	
 	@Override
 	public String toString(){
-		return "number: "+id+"seller: "+seller+"Product: "+product.toString()+"Total: "+product.getPrice();
-		 
+		StringBuffer b = new StringBuffer();
+		b.append("Number: ");
+		b.append(id);
+		b.append(" Seller: ");
+		b.append(seller);
+		b.append("\n Products: ");
+		double suma = 0;
+		for(Product p : products){
+			b.append("Name: ");
+			b.append(p.toString());
+			suma+=p.getPrice();
+		}
+		b.append(" Total: ");
+		b.append(suma);
+		return b.toString();
 	}
 	
 	@Override
@@ -60,13 +74,21 @@ public class Sale{
 				return false;
 		} else if (!id.equals(other.id)) return false;
 		return true;
-	} 
+	}
 
+	public boolean contieneProducto(String id2) {
+		boolean contiene = false;
+		for(int i = 0 ; i < products.size() && !contiene ; i++){
+			contiene = products.get(i).getId().equals(id2);
+		}
+		return contiene;
+	}
 
-	
-	
-	
-	
-	
-
+	public boolean contieneVendedor(String id2) {
+		boolean contiene = false;
+		for(int i = 0 ; i < products.size() && !contiene ; i++){
+			contiene = products.get(i).getSeller().getId().equals(id2);
+		}
+		return contiene;
+	}
 }

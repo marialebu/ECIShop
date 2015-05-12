@@ -7,7 +7,7 @@ public class Product {
 	private String desc;
 	private String image;
 	private int units;
-	private int price;
+	private float price;
 	private int original_units;
 	private User seller;
 	
@@ -16,7 +16,7 @@ public class Product {
 		this.id = id;
 	}
 	
-	public Product(String id, String type, String name, String desc, String image, Integer units, Integer price, User seller){
+	public Product(String id, String type, String name, String desc, String image, Integer units, Float price, User seller){
 		super();
 		this.id = id;
 		this.type = type;
@@ -58,21 +58,15 @@ public class Product {
 				return false;
 		} else if (!id.equals(other.id)) return false;
 		return true;
-	} 
-	
+	}	
 	
 	public boolean removeUnit(){
 		units--;
 		return units>0; 
-	}
-	
+	}	
 
 	public String getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getType() {
@@ -80,7 +74,7 @@ public class Product {
 	}
 
 	public void setType(String type) {
-		this.type = type;
+		if(!type.isEmpty())this.type = type;
 	}
 
 	public String getName() {
@@ -88,7 +82,7 @@ public class Product {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if(!name.isEmpty())this.name = name;
 	}
 
 	public String getDesc() {
@@ -96,7 +90,7 @@ public class Product {
 	}
 
 	public void setDesc(String desc) {
-		this.desc = desc;
+		if(!desc.isEmpty())this.desc = desc;
 	}
 
 	public String getImage() {
@@ -104,20 +98,20 @@ public class Product {
 	}
 
 	public void setImage(String image) {
-		this.image = image;
+		if(!image.isEmpty())this.image = image;
 	}
 
 	public void setUnits(Integer units) {
-		this.units = units;
+		if(units>0)this.units = units;
 	}
 
-	public int getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
-		this.price = price;
-	} 
+	public void setPrice(Float price) {
+		if(price>0)this.price = price;
+	}
 	
 	public int unitsSold(){
 		return original_units - units;

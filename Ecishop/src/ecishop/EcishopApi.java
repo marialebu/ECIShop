@@ -15,6 +15,8 @@ public class EcishopApi {
 	
 	public static List<Sale> sales = new ArrayList<Sale>();
 	
+	public static List<Purchase> purchases = new ArrayList<Purchase>();
+	
 	@ApiMethod(name="addUser")
 	public User addUser(@Named("id")String id, 
 					@Named("tid") String tid, 
@@ -181,7 +183,7 @@ public class EcishopApi {
 					@Named("desc") String desc,
 					@Named("image")String image,
 					@Named("units")Integer units,
-					@Named("price")Integer price, 
+					@Named("price")Float price, 
 					@Named("seller") String idse) throws Exception{
 		int index = products.indexOf(new Product(id));
 		if( index != -1) throw new Exception("The record already exists");
@@ -194,7 +196,7 @@ public class EcishopApi {
 	}
 		
 	private boolean validator(String id, String type, String name,
-			String desc, String image, Integer units, Integer price) {
+			String desc, String image, Integer units, Float price) {
 		return id!=null && name != null && desc != null && image != null  && price!=null && price>0;
 	}
 	@ApiMethod(name="updateProduct")
@@ -204,7 +206,7 @@ public class EcishopApi {
 					@Named("desc") String desc,
 					@Named("image")String image,
 					@Named("units")Integer units,
-					@Named("price")Integer price) throws Exception{ 
+					@Named("price")Float price) throws Exception{ 
 		int index = products.indexOf(new Product(id));
 		if (index == -1) throw new Exception("Record does not exist");
 		if (units<=0 || price < 0) throw new Exception("Each number (units, price) must be a positive integer");
@@ -285,7 +287,7 @@ public class EcishopApi {
 	public List<Product> getProductsByUniquePrice(@Named("price") Integer price) throws Exception{
 		List<Product> resp = new ArrayList<Product>();
 		for(Product p : products){
-			int precio = p.getPrice();
+			float precio = p.getPrice();
 			if(precio==price){
 				resp.add(p);
 			}
@@ -303,7 +305,7 @@ public class EcishopApi {
 		}
 		List<Product> resp = new ArrayList<Product>();
 		for(Product p : products){
-			int precio = p.getPrice();
+			float precio = p.getPrice();
 			if(precio>=min && precio<=max){
 				resp.add(p);
 			}
@@ -328,23 +330,31 @@ public class EcishopApi {
 	}
 	
 //--------------------------------------------SALES-------------------------------------------------------------
-	
+	/*
+	 * Agregar una venta.
+	 * @params	userId	Comprador
+	 * 			prods	Productos
+	 */
 	@ApiMethod(name="addSale")
 	public Sale addSale(@Named("userId")String userId,
-						@Named("productId") String productId
+						@Named("productId") String[] prods
 		) throws Exception{
 		String id = Integer.toString(sales.size());
 		int index = users.indexOf(new User(userId));
 		if( index == -1) throw new Exception("The user doesnt exists");
 		User user = users.get(index);
-		index = products.indexOf(new Product(productId));
-		if( index == -1) throw new Exception("The product doesnt exists");
-		Product product = products.get(index);
-		boolean existenUnidades = product.removeUnit();
-		if(!existenUnidades){
-			products.remove(index);
+		ArrayList<Product> productsSale = new ArrayList<Product>();
+		for(String productId : prods){
+			index = products.indexOf(new Product(productId));
+			if( index == -1) throw new Exception("The product doesnt exists");
+			Product product = products.get(index);
+			boolean existenUnidades = product.removeUnit();
+			if(!existenUnidades){
+				products.remove(index);
+			}
+			productsSale.add(product);
 		}
-		Sale sale = new Sale(id, user, product);
+		Sale sale = new Sale(id, user, productsSale);
 		sales.add(sale);
 		return sale;	
 	}
@@ -378,7 +388,7 @@ public class EcishopApi {
 		if( index == -1) throw new Exception("The user doesnt exists");
 		ArrayList<Sale> resp = new ArrayList<Sale>();
 		for(Sale s : sales){
-			if(s.getProduct().getId().equals(id)){
+			if(s.contieneProducto(id)){
 				resp.add(s);
 			}
 		}
@@ -392,7 +402,7 @@ public class EcishopApi {
 	public ArrayList<Sale> getSalesBySellerId(@Named("id") String id) throws Exception{
 		ArrayList<Sale> resp = new ArrayList<Sale>();
 		for(Sale s : sales){
-			if(s.getSeller().equals(id)){
+			if(s.contieneVendedor(id)){
 				resp.add(s);
 			}
 		}
@@ -401,7 +411,79 @@ public class EcishopApi {
 	
 	//----------------------------------------------PURCHASES-------------------------------------------------------------------
 	
+	/*
+	 * Agregar una venta.
+	 * @params	userId	Comprador
+	 * 			prods	Productos
+	 */
+	@ApiMethod(name="addPurchase")
+	public Purchase addPurchase(@Named("userId")String userId,
+						@Named("productId") String[] prods
+		) throws Exception{
+		String id = Integer.toString(purchases.size());
+		int index = users.indexOf(new User(userId));
+		if( index == -1) throw new Exception("The user doesnt exists");
+		User user = users.get(index);
+		ArrayList<Product> productsSale = new ArrayList<Product>();
+		for(String productId : prods){
+			index = products.indexOf(new Product(productId));
+			if( index == -1) throw new Exception("The product doesnt exists");
+			Product product = products.get(index);
+			productsSale.add(product);
+		}
+		Purchase purch = new Purchase(id, user, productsSale);
+		purchases.add(purch);
+		return purch;	
+	}
 	
+	@ApiMethod(name="listPurchases")
+	public List<Purchase> getPurchases(){
+		return purchases;
+	}
 	
+	@ApiMethod(name="purchaseById")
+	public Purchase getPurchaseById(@Named("id") String id) throws Exception{
+		int index = purchases.indexOf(new Purchase(id));
+		if( index == -1) throw new Exception("The record doesn't exists");
+		return purchases.get(index);
+	}
+	
+	@ApiMethod(name="purchasesByUserId", path="purchases_uid")
+	public ArrayList<Purchase> getPurchasesbyUserId(@Named("id") String id) throws Exception{
+		ArrayList<Purchase> resp = new ArrayList<Purchase>();
+		for(Purchase s : purchases){
+			if(s.getId().equals(id)){
+				resp.add(s);
+			}
+		}
+		return resp;
+	}
+	
+	@ApiMethod(name="purchasesByProductId", path="purchases_pid")
+	public ArrayList<Purchase> getPurchasesbyProductId(@Named("id") String id) throws Exception{
+		int index = purchases.indexOf(new Purchase(id));
+		if( index == -1) throw new Exception("The user doesnt exists");
+		ArrayList<Purchase> resp = new ArrayList<Purchase>();
+		for(Purchase p : purchases){
+			if(p.contieneProducto(id)){
+				resp.add(p);
+			}
+		}
+		return resp;
+	}
+	
+	/*
+	 * Buscar compras por vendedor. 
+	 */
+	@ApiMethod(name="purchasesBySeller")
+	public ArrayList<Purchase> getPurchasesBySellerId(@Named("id") String id) throws Exception{
+		ArrayList<Purchase> resp = new ArrayList<Purchase>();
+		for(Purchase s : purchases){
+			if(s.contieneVendedor(id)){
+				resp.add(s);
+			}
+		}
+		return resp;
+	}
 	
 }

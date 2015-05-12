@@ -141,5 +141,11 @@ public class User {
 	public void setBirth(Calendar birth) {
 		this.birth = birth;
 	} 
+	
+
+	public String getId() {
+		return id;
+	}
+
 
 }
