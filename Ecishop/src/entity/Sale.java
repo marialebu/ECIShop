@@ -1,4 +1,4 @@
-package ecishop;
+package entity;
 
 import java.util.ArrayList;
 

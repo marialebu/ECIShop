@@ -1,4 +1,4 @@
-package ecishop;
+package entity;
 
 import java.io.IOException;
 import javax.servlet.http.*;

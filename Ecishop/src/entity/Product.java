@@ -1,4 +1,4 @@
-package ecishop;
+package entity;
 
 public class Product {
 	private String id; 
