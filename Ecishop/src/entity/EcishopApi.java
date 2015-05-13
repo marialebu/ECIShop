@@ -17,6 +17,8 @@ public class EcishopApi {
 	
 	public static List<Purchase> purchases = new ArrayList<Purchase>();
 	
+	private static String[] categories = {"All Categories", "Automotive & Industrial", "Beauty, Health & Grocery", "Books", "Clothing, Shoes & Jewelry", "Home, Garden & Tools", "Movies, Music & Games", "Sports & Outdoors","Toys, Kids & Baby", "Electronics & Computers"};
+	
 	@ApiMethod(name="addUser")
 	public User addUser(@Named("id")String id, 
 					@Named("tid") String tid, 
@@ -44,7 +46,7 @@ public class EcishopApi {
 			int y = Integer.parseInt(r[2]);
 			int m = Integer.parseInt(r[1]);
 			int d = Integer.parseInt(r[0]);
-			return Validator.validateEmail(email) && getUsersbyEmail(email).size()==0 && !existUserById(id) && tid.equals("cc") ? id.length()>7 : 
+			return Validator.validateEmail(email) &&  gUserByEmail(email) == null && !existUserById(id) && (tid.equals("CC") || tid.equals("CE")) ? id.length()>7 : 
 				id.length()>4 && (gen.equals("F") || gen.equals("M")) && r.length == 3 && c.get(Calendar.YEAR)-y >= 18 && c.get(Calendar.YEAR) > y && m>=0 && m <=12 && d>=0 && d<=31;
 		}catch (Exception e){
 			return false;
@@ -145,15 +147,20 @@ public class EcishopApi {
 		return res;
 	}
 	
-	@ApiMethod(name="usersbyEmail", path="user_email")
-	public ArrayList<User> getUsersbyEmail(@Named("email") String email){
-		ArrayList<User> res = new ArrayList<User>();
+	@ApiMethod(name="userbyEmail", path="user_email")
+	public User getUserbyEmail(@Named("email") String email) throws Exception{
+		User res = gUserByEmail(email);
+		if(res == null) throw new Exception("The user doesn't exists");
+		return res;
+	}
+	
+	private User gUserByEmail(String email){
+		User res = null; 
 		for(User u : users){
 			if(u.getEmail().equals(email)){
-				res.add(u);
+				res = u;
 			}
 		}
-		
 		return res;
 	}
 	
@@ -169,6 +176,7 @@ public class EcishopApi {
 					r = true;
 			}
 		}
+		if(!r) throw new Exception("User doesnt exist");
 		if(r && !u.getPassword().equals(pass)) throw new Exception("Invalid user or password");
 		return u;
 	}
@@ -177,28 +185,36 @@ public class EcishopApi {
 		
 		
 	@ApiMethod(name="addProduct")
-	public Product addProduct(@Named("id")String id, 
-					@Named("type") String type, 
+	public Product addProduct(@Named("type")String type, 
 					@Named("name")String name, 
 					@Named("desc") String desc,
 					@Named("image")String image,
 					@Named("units")Integer units,
 					@Named("price")Float price, 
 					@Named("seller") String idse) throws Exception{
-		int index = products.indexOf(new Product(id));
-		if( index != -1) throw new Exception("The record already exists");
+		String id = products.size()+"";
 		if(!validator(id, type, name, desc, image, units, price))throw new Exception("Invalid fields");
-		index = users.indexOf(new User(idse)); 
-		if( index != -1) throw new Exception("The seller doesn't exists");
+		int index = users.indexOf(new User(idse)); 
+		if( index == -1) throw new Exception("The seller doesn't exists");
 		Product product = new Product(id, type, name, desc, image, units, price, users.get(index));
 		products.add(product);
 		return new Product(id);
 	}
-		
+	
 	private boolean validator(String id, String type, String name,
 			String desc, String image, Integer units, Float price) {
-		return id!=null && name != null && desc != null && image != null  && price!=null && price>0;
+		return id!=null && containsCategory(type) && name != null && desc != null && image != null  && price!=null && price>0;
 	}
+	
+	private boolean containsCategory(String type){
+		boolean sePuede = true;
+		for(int i = 0 ; i < categories.length && !sePuede; i++){
+			sePuede = categories[i].equals(type);
+		}
+		return sePuede;
+	}
+	
+	
 	@ApiMethod(name="updateProduct")
 	public Product updateProduct(@Named("id")String id, 
 					@Named("type") String type, 
@@ -247,13 +263,12 @@ public class EcishopApi {
 		boolean existe = false;
 		int index = -1;
 		for(int i = 0 ; i < products.size() && !existe; i++){
-			if(products.get(i).getId()==id){
+			if(products.get(i).getId().equals(id)){
 				existe=true;
 				index=i;
 			}
 		}
-		if (!existe)
-			throw new Exception("Record does not exist");
+		if (!existe) throw new Exception("Record does not exist");
 		return products.get(index);
 	}
 	
@@ -262,7 +277,7 @@ public class EcishopApi {
 		List<Product> resp = new ArrayList<Product>();
 		for(Product p : products){
 			String tipo = p.getType();
-			if(tipo.equals(type)){
+			if(tipo.equals(type) || type.equals("All Categories")){
 				resp.add(p);
 			}
 		}
@@ -275,7 +290,7 @@ public class EcishopApi {
 		List<Product> resp = new ArrayList<Product>();
 		for(Product p : products){
 			String nombre = p.getName();
-			if(name.equals(nombre)){
+			if(name.equals(nombre) || name.contains(nombre)){
 				resp.add(p);
 			}
 		}
@@ -284,7 +299,7 @@ public class EcishopApi {
 	}
 	
 	@ApiMethod(name="productsByUniquePrice", path="product_uprice")
-	public List<Product> getProductsByUniquePrice(@Named("price") Integer price) throws Exception{
+	public List<Product> getProductsByUniquePrice(@Named("price") Float price) throws Exception{
 		List<Product> resp = new ArrayList<Product>();
 		for(Product p : products){
 			float precio = p.getPrice();
@@ -329,6 +344,23 @@ public class EcishopApi {
 		return pmax;
 	}
 	
+	@ApiMethod(name="productsByMostSold", path="products_msold")
+	public ArrayList<Product> getProductsByMostSold() throws Exception{
+		ArrayList<Product> resp = new ArrayList<Product>();
+		ArrayList<Product> temp;
+		for(Sale s : sales){
+			temp = s.getProducts();
+			for(Product p : temp){
+				if(!resp.contains(p)){
+					resp.add(p);
+				}
+			}
+		}
+		Collections.sort(resp);
+		return resp;
+	}
+
+	
 //--------------------------------------------SALES-------------------------------------------------------------
 	/*
 	 * Agregar una venta.
@@ -337,13 +369,14 @@ public class EcishopApi {
 	 */
 	@ApiMethod(name="addSale")
 	public Sale addSale(@Named("userId")String userId,
-						@Named("productId") String[] prods
+						@Named("productId") String prodsIds
 		) throws Exception{
 		String id = Integer.toString(sales.size());
 		int index = users.indexOf(new User(userId));
 		if( index == -1) throw new Exception("The user doesnt exists");
 		User user = users.get(index);
 		ArrayList<Product> productsSale = new ArrayList<Product>();
+		String[] prods = prodsIds.split("-");
 		for(String productId : prods){
 			index = products.indexOf(new Product(productId));
 			if( index == -1) throw new Exception("The product doesnt exists");
@@ -418,13 +451,14 @@ public class EcishopApi {
 	 */
 	@ApiMethod(name="addPurchase")
 	public Purchase addPurchase(@Named("userId")String userId,
-						@Named("productId") String[] prods
+						@Named("productId") String prodsIds
 		) throws Exception{
 		String id = Integer.toString(purchases.size());
 		int index = users.indexOf(new User(userId));
 		if( index == -1) throw new Exception("The user doesnt exists");
 		User user = users.get(index);
 		ArrayList<Product> productsSale = new ArrayList<Product>();
+		String[] prods = prodsIds.split("-");
 		for(String productId : prods){
 			index = products.indexOf(new Product(productId));
 			if( index == -1) throw new Exception("The product doesnt exists");
@@ -486,4 +520,10 @@ public class EcishopApi {
 		return resp;
 	}
 	
+	//----------------------------Others-------------------------------------------------------
+	
+	@ApiMethod(name="getCategories")
+	public String[] getCategories(){
+		return categories;
+	}
 }

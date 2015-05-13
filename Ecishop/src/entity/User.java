@@ -5,18 +5,39 @@ import java.util.GregorianCalendar;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Unique;
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class User {
-	private String id; 
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@PrimaryKey
+	private String id;
+	@Persistent
 	private String tid;
+	@Persistent
 	private String name;
+	@Persistent
 	private String gen;
+	@Persistent
 	private String lastname;
-	private String phone; 
+	@Persistent
+	private String phone;
+	@Persistent
+	@Unique
 	private String email;
+	@Persistent
 	private String password;
+	@Persistent
 	private String address;
+	@Persistent
 	private String pmethod;
+	@Persistent
 	private String cardnumber;
+	@Persistent
 	private Calendar birth; 
 	
 	public User(String id){

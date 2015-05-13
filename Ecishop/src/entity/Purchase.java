@@ -2,10 +2,20 @@ package entity;
 
 import java.util.ArrayList;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Purchase {
-	
-	private String id; 
-	private User buyer; 
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@PrimaryKey
+	private String id;
+	@Persistent
+	private User buyer;
+	@Persistent
 	private ArrayList<Product> products;
 	
 	public Purchase(String id){

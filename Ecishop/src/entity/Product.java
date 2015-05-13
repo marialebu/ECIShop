@@ -1,14 +1,31 @@
 package entity;
 
-public class Product {
-	private String id; 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class Product implements Comparable<Product> {
+	@Persistent( valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@PrimaryKey
+	private String id;
+	@Persistent
 	private String type;
+	@Persistent
 	private String name;
+	@Persistent
 	private String desc;
+	@Persistent
 	private String image;
+	@Persistent
 	private int units;
+	@Persistent
 	private float price;
+	@Persistent
 	private int original_units;
+	@Persistent
 	private User seller;
 	
 	public Product(String id){
@@ -23,7 +40,7 @@ public class Product {
 		this.desc = desc;
 		this.image = image;
 		this.name = name; 
-		this.units = units;
+		this.setUnits(units);
 		original_units = units;
 		this.price = price;
 		this.seller= seller;
@@ -61,8 +78,8 @@ public class Product {
 	}	
 	
 	public boolean removeUnit(){
-		units--;
-		return units>0; 
+		setUnits(getUnits() - 1);
+		return getUnits()>0; 
 	}	
 
 	public String getId() {
@@ -114,11 +131,26 @@ public class Product {
 	}
 	
 	public int unitsSold(){
-		return original_units - units;
+		return original_units - getUnits();
 	}
 
 	public User getSeller() {
 		return seller;
 	}
+
+	public int compareTo(Product o) {
+		int res = 0;
+		if(unitsSold()>o.unitsSold()){
+			res = 1;
+		}else if(unitsSold()<o.unitsSold()){
+			res = -1;
+		}
+		return res;
+	}
+
+	public int getUnits() {
+		return units;
+	}
+
 
 }
